@@ -1,0 +1,24 @@
+{
+	"name": "jogo-multiplayer",
+	"version": "1.0.0",
+	"description": "Um simples jogo multiplayer usando html, css, javascript e canvas baseado no [tutorial do Filipe Deschamps](https://www.youtube.com/watch?v=0sTfIZvjYJk&list=PLMdYygf53DP5SVQQrkKCVWDS0TwYLVitL).",
+	"main": "server.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/marcelomesquita/jogo-multiplayer.git"
+	},
+	"author": "Marcelo Mesquita",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^4.17.1",
+		"socket.io": "^2.3.0"
+	},
+	"bugs": {
+		"url": "https://github.com/marcelomesquita/jogo-multiplayer/issues"
+	},
+	"homepage": "https://github.com/marcelomesquita/jogo-multiplayer#readme"
+}
