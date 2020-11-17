@@ -10,6 +10,12 @@ export default function createGame() {
 
 	const observers = []
 
+	function start() {
+		const interval = 2000
+
+		setInterval(addFruit, interval)
+	}
+
 	function setState(newState) {
 		Object.assign(state, newState)
 	}
@@ -22,6 +28,24 @@ export default function createGame() {
 		for (const observer of observers) {
 			observer(command)
 		}
+	}
+
+	function addFruit(command) {
+		const fruit = {
+			id: command ? command.id : Math.floor(Math.random() * 1000),
+			x: command ? command.x : Math.floor(Math.random() * state.screen.width),
+			y: command ? command.y : Math.floor(Math.random() * state.screen.height)
+		}
+
+		state.fruits[fruit.id] = fruit
+
+		notifyAll({ type: 'add-fruit', fruit })
+	}
+
+	function removeFruit(command) {
+		delete state.fruits[command.id]
+
+		notifyAll({ type: 'remove-fruit', command })
 	}
 
 	function addPlayer(command) {
@@ -39,21 +63,12 @@ export default function createGame() {
 	function removePlayer(command) {
 		delete state.players[command.id]
 
-		notifyAll({ type: 'remove-player', player: { id: command.id } })
-	}
-
-	function addFruit(command) {
-		state.fruits[command.id] = {
-			x: command.x,
-			y: command.y
-		}
-	}
-
-	function removeFruit(command) {
-		delete state.fruits[command.id]
+		notifyAll({ type: 'remove-player', player: command })
 	}
 
 	function movePlayer(command) {
+		notifyAll(command)
+
 		const acceptedMoves = {
 			ArrowUp(player) {
 				player.y = Math.max(player.y - 1, 0)
@@ -75,8 +90,6 @@ export default function createGame() {
 		if (player && moveFunction) {
 			moveFunction(player)
 			checkFruitCollision(player)
-
-			notifyAll(command)
 		}
 	}
 
@@ -85,20 +98,21 @@ export default function createGame() {
 			const fruit = state.fruits[fruitId]
 
 			if (player.x == fruit.x && player.y == fruit.y) {
-				removeFruit({ id: fruitId })
+				removeFruit(fruit)
 			}
 		}
 	}
 
 	return {
 		state,
+		start,
 		setState,
 		subscribe,
 		notifyAll,
-		addPlayer,
-		removePlayer,
 		addFruit,
 		removeFruit,
+		addPlayer,
+		removePlayer,
 		movePlayer,
 		checkFruitCollision
 	}

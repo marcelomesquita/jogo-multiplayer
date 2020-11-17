@@ -51,6 +51,11 @@
 			})
 		})
 
+		socket.on('add-fruit', (command) => {
+			console.log(`> Receiving ${command.type}: ${command.fruit.id}`)
+			game.addFruit(command.fruit)
+		})
+
 		socket.on('add-player', (command) => {
 			console.log(`> Receiving ${command.type}: ${command.player.id}`)
 			game.addPlayer(command.player)
@@ -66,7 +71,7 @@
 
 			const playerId = socket.id
 
-			if (playerId != command.playerId) {
+			if (playerId !== command.playerId) {
 				game.movePlayer(command)
 			}
 		})

@@ -10,6 +10,8 @@ const game = createGame()
 
 app.use(express.static('public'))
 
+game.start()
+
 game.subscribe((command) => {
 	console.log(`> Emiting ${command.type}`)
 	sockets.emit(command.type, command)
